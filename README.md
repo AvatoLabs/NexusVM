@@ -271,3 +271,4 @@ BRIDGE_SFTP_BASE_PATH : Base path on the SFTP server where NexusVM data will be 
 
 ### Configuration File
 The NexusVM Bridge CLI uses a configuration file (bridge.toml) located in the specified key directory (default: `~/.nexusvm-bridge/`). This file is used to store the keys for the depositor, operator, verifier, and withdrawer.
+# NexusVM
