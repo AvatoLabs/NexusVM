@@ -1,5 +1,5 @@
 use crate::treepp::*;
-use bitcoin_script_stack::stack::{StackTracker, StackVariable};
+use bitcoin_script_stack::stack::{StackTracker, StackVariable}; // NOTE: Bitcoin script stack types
 
 use crate::u4::u4_logic::u4_sort;
 
@@ -113,7 +113,7 @@ pub fn u4_and_with_xor_stack(
 mod tests {
     use super::*;
     use crate::u4::u4_shift_stack::u4_push_shift_tables_stack;
-    use bitcoin_script_stack::stack::StackTracker;
+    use bitcoin_script_stack::stack::StackTracker; // NOTE: Bitcoin script stack tracker
 
     #[test]
     fn test_and_with_xor_full_table() {

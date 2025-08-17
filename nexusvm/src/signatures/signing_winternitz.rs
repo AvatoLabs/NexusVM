@@ -169,7 +169,7 @@ mod tests {
         })
     }
 
-    /// Returns a Bitcoin script that compares two elements of length `n`.
+    /// Returns a Bitcoin script that compares two elements of length `n`. // NOTE: Bitcoin script comparison
     ///
     /// The script consumes its inputs.
     /// If the two elements are not equal, then the script fails immediately.
@@ -191,7 +191,7 @@ mod tests {
         )
     }
 
-    /// Convert the raw Bitcoin witness into a byte vector.
+    /// Convert the raw Bitcoin witness into a byte vector. // NOTE: Bitcoin witness conversion
     ///
     /// The witness encodes the signed message in digit form.
     fn u32_witness_to_bytes(witness: Vec<Vec<u8>>) -> Vec<u8> {

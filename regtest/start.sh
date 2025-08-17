@@ -8,18 +8,18 @@ if [ -n "$data_path" ]; then
     echo "esplora client already running"
   else
     docker run -d -p 50001:50001 -p 8094:80 \
-        --volume "$data_path/esplora-bitcoin-regtest-data:/data" \
+        --volume "$data_path/esplora-tondi-regtest-data:/data" \
         --rm -i -t blockstream/esplora \
-        bash -c "sed -i '182i echo \"acceptnonstdtxn=1\" >> /data/.bitcoin.conf' /srv/explorer/run.sh && \
+        bash -c "sed -i '182i echo \"acceptnonstdtxn=1\" >> /data/.tondi.conf' /srv/explorer/run.sh && \
                 sed -i '/http {/a \    client_max_body_size 100M;' /etc/nginx/nginx.conf && \
-                /srv/explorer/run.sh bitcoin-regtest explorer"
+                /srv/explorer/run.sh tondi-regtest explorer"
 
     echo "Waiting for esplora start up (10s) ..."
     sleep 10
   fi
 
   pid=`docker ps | grep blockstream/esplora | awk '{print $1}'`
-  createwallet_command="/srv/explorer/bitcoin/bin/bitcoin-cli -conf=/data/.bitcoin.conf -datadir=/data/bitcoin createwallet default"
+  createwallet_command="/srv/explorer/tondi/bin/tondi-cli -conf=/data/.tondi.conf -datadir=/data/tondi createwallet default"
   docker exec $pid /bin/bash -c "$createwallet_command"
 
   pid=`ps | grep "[b]lock-generator" | awk '{print $1}'`

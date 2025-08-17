@@ -4,18 +4,18 @@ pub mod treepp {
     pub use crate::execute_script;
     pub use crate::execute_script_without_stack_limit;
     pub use crate::run;
-    pub use bitcoin_script::{script, Script};
+    pub use bitcoin_script::{script, Script}; // NOTE: Bitcoin script types
 }
 
 use core::fmt;
 
-use bitcoin::{
+use bitcoin::{ // NOTE: Bitcoin core types
     hashes::Hash,
     hex::DisplayHex,
     taproot::{LeafVersion, TAPROOT_ANNEX_PREFIX},
     Opcode, Script, ScriptBuf, TapLeafHash, Transaction, TxOut,
 };
-use bitcoin_scriptexec::{Exec, ExecCtx, ExecError, ExecStats, Options, Stack, TxTemplate};
+use bitcoin_scriptexec::{Exec, ExecCtx, ExecError, ExecStats, Options, Stack, TxTemplate}; // NOTE: Bitcoin script execution types
 
 pub mod bigint;
 pub mod bn254;

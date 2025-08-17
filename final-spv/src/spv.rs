@@ -47,7 +47,7 @@ mod tests {
     use hex_literal::hex;
 
     use crate::{
-        merkle_tree::{verify_merkle_proof, BitcoinMerkleTree, BlockInclusionProof},
+        merkle_tree::{verify_merkle_proof, TondiMerkleTree, BlockInclusionProof},
         spv::SPV,
         transaction::CircuitTransaction,
     };
@@ -107,18 +107,18 @@ mod tests {
                 CircuitTransaction(bitcoin::consensus::deserialize(*tx).unwrap())
             })
             .collect::<Vec<CircuitTransaction>>();
-        let mut bitcoin_merkle_proofs: Vec<BlockInclusionProof> = vec![];
+        let mut tondi_merkle_proofs: Vec<BlockInclusionProof> = vec![];
         for tx in txs.iter() {
             let txid = tx.txid();
             println!("txid: {:?}", txid);
-            let bitcoin_merkle_tree = BitcoinMerkleTree::new(vec![txid]);
-            let bitcoin_merkle_proof = bitcoin_merkle_tree.generate_proof(0);
+            let tondi_merkle_tree = TondiMerkleTree::new(vec![txid]);
+            let tondi_merkle_proof = tondi_merkle_tree.generate_proof(0);
             assert!(verify_merkle_proof(
                 txid,
-                &bitcoin_merkle_proof,
-                bitcoin_merkle_tree.root()
+                &tondi_merkle_proof,
+                tondi_merkle_tree.root()
             ));
-            bitcoin_merkle_proofs.push(bitcoin_merkle_proof);
+            tondi_merkle_proofs.push(tondi_merkle_proof);
         }
         for (i, header) in block_headers.iter().enumerate() {
             mmr_native.append(header.compute_block_hash());
@@ -129,7 +129,7 @@ mod tests {
                 assert_eq!(mmr_leaf, block_headers[j].compute_block_hash());
                 let spv = SPV::new(
                     txs[j].clone(),
-                    bitcoin_merkle_proofs[j].clone(),
+                    tondi_merkle_proofs[j].clone(),
                     block_headers[j].clone(),
                     mmr_proof,
                 );

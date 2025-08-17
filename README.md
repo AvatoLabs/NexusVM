@@ -1,4 +1,4 @@
-# NexusVM Bridge: A Trust-minimized Bitcoin Bridge
+# NexusVM Bridge: A Trust-minimized Tondi Bridge
 
 > [!WARNING]
 > DO NOT USE IN PRODUCTION!
@@ -8,10 +8,10 @@ The code follows the implementation of [Arkworks](https://github.com/arkworks-rs
 
 ## Overview
 
-The repository contains the implementation of a groth16 SNARK verifier that is executable via the optimistic NexusVM paradigm on Bitcoin without any soft forks.
+The repository contains the implementation of a groth16 SNARK verifier that is executable via the optimistic NexusVM paradigm on Tondi without any soft forks.
 
 
-It is designed to be modular, allowing developers to reuse bitcoin scripts for u32 data types, hashes and curve operations.
+It is designed to be modular, allowing developers to reuse tondi scripts for u32 data types, hashes and curve operations.
 
 ## Components
 
@@ -29,7 +29,7 @@ Below is a list of the components and their purpose.
 - [**Hash Functions**](nexusvm/src/hash/):
   Two types of hash functions:
 
-  - `SHA256`: comparing block headers and measuring Bitcoin difficulty.
+  - `SHA256`: comparing block headers and measuring Bitcoin difficulty. // NOTE: Bitcoin difficulty measurement logic
   - `BLAKE3`: compressing intermediate states in the chunker.
 
 - [**Big Integer**](nexusvm/src/bigint/):
@@ -57,8 +57,8 @@ Below is a list of the components and their purpose.
   [Winternitz signature](https://en.wikipedia.org/wiki/Lamport_signature#Short_keys_and_signature).
 
 - [**Bridge**](bridge/):
-  Definitions for the context (roles), connectors, Bitcoin transaction construction,
-  Bitcoin client wrapper, etc.
+  Definitions for the context (roles), connectors, Tondi transaction construction,
+  Tondi client wrapper, etc.
 
 ## NexusVM1
 
@@ -70,13 +70,13 @@ If you are looking for the deprectated NexusVM1 implementation, please check out
 
 ### Overview
 
-The **NexusVM CLI** is a command-line interface for interacting with the NexusVM protocol, enabling users to manage Bitcoin keys, initiate peg-ins, retrieve addresses and UTXOs, and monitor the status of transactions within the NexusVM network. 
+The **NexusVM CLI** is a command-line interface for interacting with the NexusVM protocol, enabling users to manage Tondi keys, initiate peg-ins, retrieve addresses and UTXOs, and monitor the status of transactions within the NexusVM network. 
 
-This CLI supports multiple Bitcoin network environments, including `mainnet` and `testnet`.
+This CLI supports multiple Tondi network environments, including `mainnet` and `testnet`.
 
 ### Features
 
-- **Manage Bitcoin Keys**: Easily manage keys for different roles (depositor, operator, verifier, withdrawer).
+- **Manage Tondi Keys**: Easily manage keys for different roles (depositor, operator, verifier, withdrawer).
 - **Retrieve Depositor Address**: Get the address associated with the registered depositor key.
 - **Retrieve Depositor UTXOs**: List unspent transaction outputs (UTXOs) for the depositor.
 - **Initiate Peg-Ins**: Start the process of peg-ins by creating peg-in graphs.
@@ -115,7 +115,7 @@ The NexusVM CLI application can be invoked with various commands. The general sy
 ### Global Options
 
 - -r, --verifiers <VERIFIER_PUBKEYS>: Comma-separated list of public keys for verifiers (max: 1000). Can also be set via the VERIFIERS environment variable.
-- -e, --environment <ENVIRONMENT>: Optional; Specify the Bitcoin network environment (mainnet, testnet, regtest). Defaults to testnet. Can also be set via the ENVIRONMENT environment variable.
+- -e, --environment <ENVIRONMENT>: Optional; Specify the Tondi network environment (mainnet, testnet, regtest). Defaults to testnet. Can also be set via the ENVIRONMENT environment variable.
 - --key-dir <DIRECTORY>: Optional; Directory containing the private keys. Can also be set via the KEY_DIR environment variable.
 - -p, --user-profile <USER_PROFILE>: Optional; An arbitrary name of the user running the client (e.g. 'operator_one', 'verifier_0'). Used as a namespace separator in the local file path for storing private and public client data. Can also be set by the USER_PROFILE environment variable.
 
@@ -248,7 +248,7 @@ You can set the following environment variables to configure the CLI:
 
 - KEY_DIR: Optional; Directory containing private keys.
 - VERIFIERS: Comma-separated list of public keys for verifiers.
-- ENVIRONMENT: Optional; Bitcoin network environment (default: testnet).
+- ENVIRONMENT: Optional; Tondi network environment (default: testnet).
 - USER_PROFILE: Optional; An arbitrary name of the user running the client (e.g. 'operator_one', 'verifier_0'). Used as a namespace separator in the local file path for storing private and public client data.
 
 #### FTP/SFTP Environment Variables

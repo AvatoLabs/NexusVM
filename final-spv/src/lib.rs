@@ -12,7 +12,7 @@ pub use risc0_zkvm;
 
 /// The method ID for the header chain circuit.
 const HEADER_CHAIN_GUEST_ID: [u32; 8] = {
-    match option_env!("BITCOIN_NETWORK") {
+    match option_env!("TONDI_NETWORK") {
         Some(network) if matches!(network.as_bytes(), b"mainnet") => [
             1089137192, 2499827081, 1648551528, 3898441744, 1241508107, 1212614376, 523594555,
             2385906108,

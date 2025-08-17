@@ -10,23 +10,23 @@ use super::transaction::CircuitTransaction;
 ///
 
 #[derive(Debug, Clone)]
-pub struct BitcoinMerkleTree {
+pub struct TondiMerkleTree {
     nodes: Vec<Vec<[u8; 32]>>,
 }
 
-impl BitcoinMerkleTree {
-    /// Constructs a standard Bitcoin Merkle tree.
+impl TondiMerkleTree {
+    /// Constructs a standard Tondi Merkle tree.
     /// Leaf nodes are transaction IDs (txids), which are double-SHA256 hashes of transaction data.
     /// Internal nodes are formed by `DSHA256(LeftChildHash || RightChildHash)`.
     pub fn new(transactions: Vec<[u8; 32]>) -> Self {
         if transactions.len() == 1 {
             // root is the coinbase txid
-            return BitcoinMerkleTree {
+            return TondiMerkleTree {
                 nodes: vec![transactions],
             };
         }
 
-        let mut tree = BitcoinMerkleTree {
+        let mut tree = TondiMerkleTree {
             nodes: vec![transactions],
         };
 
@@ -84,17 +84,17 @@ impl BitcoinMerkleTree {
 
     /// Constructs a "mid-state" Merkle tree, designed for generating secure SPV (Simplified Payment Verification) proofs.
     /// This structure, when used with the corresponding `calculate_root_with_merkle_proof` (or `BlockInclusionProof::get_root`) method,
-    /// helps mitigate vulnerabilities associated with standard Bitcoin Merkle trees in SPV contexts, such as certain forms of hash duplication or ambiguity attacks (e.g., CVE-2012-2459).
+    /// helps mitigate vulnerabilities associated with standard Tondi Merkle trees in SPV contexts, such as certain forms of hash duplication or ambiguity attacks (e.g., CVE-2012-2459).
     /// Also please check:
     /// https://bitslog.com/2018/06/09/leaf-node-weakness-in-bitcoin-merkle-tree-design/ with the suggested fix:
     /// https://bitslog.com/2018/08/21/simple-change-to-the-bitcoin-merkleblock-command-to-protect-from-leaf-node-weakness-in-transaction-merkle-tree/
     ///
-    /// The leaves of this tree are transaction identifiers (`mid_state_txid()`), typically standard Bitcoin txids (double-SHA256 of the transaction).
-    /// The internal nodes of this "mid-state" tree are constructed differently from a standard Bitcoin Merkle tree:
+    /// The leaves of this tree are transaction identifiers (`mid_state_txid()`), typically standard Tondi txids (double-SHA256 of the transaction).
+    /// The internal nodes of this "mid-state" tree are constructed differently from a standard Tondi Merkle tree:
     /// `N_parent = SHA256(SHA256(N_child_left) || SHA256(N_child_right))`
     /// where `N_child_left` and `N_child_right` are nodes from the level below in this mid-state tree.
     ///
-    /// The root of this mid-state tree (`Root_ms`) is an intermediate hash. The actual Bitcoin block Merkle root
+    /// The root of this mid-state tree (`Root_ms`) is an intermediate hash. The actual Tondi block Merkle root
     /// is expected to be `SHA256(Root_ms)`, as demonstrated in the test cases.
     ///
     /// The security enhancement for SPV comes from how proofs generated from this tree are verified:
@@ -188,13 +188,13 @@ impl BitcoinMerkleTree {
         BlockInclusionProof::new(idx, path)
     }
 
-    /// Calculates the Bitcoin Merkle root from a leaf's transaction ID (mid_state_txid) and its inclusion proof
+    /// Calculates the Tondi Merkle root from a leaf's transaction ID (mid_state_txid) and its inclusion proof
     /// derived from a "mid-state" Merkle tree. This function is central to secure SPV.
     ///
     /// The `inclusion_proof` contains sibling nodes from the "mid-state" Merkle tree.
     /// The security enhancement lies in how these proof elements are processed:
     /// Each sibling node from the proof path is first hashed with `SHA256` before being
-    /// combined with the current hash using the standard Bitcoin `calculate_double_sha256` method.
+    /// combined with the current hash using the standard Tondi `calculate_double_sha256` method.
     ///
     /// `current_hash = calculate_double_sha256(current_hash || SHA256(sibling_from_mid_state_proof))`
     ///
@@ -227,7 +227,7 @@ impl BlockInclusionProof {
     ///
     /// The core of the SPV security enhancement is here:
     /// Each `merkle_proof` element (a sibling node from the mid-state tree) is first hashed
-    /// with `calculate_sha256`. This transformed hash is then used in the standard Bitcoin
+    /// with `calculate_sha256`. This transformed hash is then used in the standard Tondi
     /// Merkle combination step (`calculate_double_sha256`).
     ///
     /// If `leaf` is the current hash and `P_mid_state` is a sibling from the proof path:
@@ -235,7 +235,7 @@ impl BlockInclusionProof {
     ///
     /// This ensures that elements from the mid-state tree's structure are treated distinctly
     /// from the leaf transaction IDs, preventing cross-interpretation and related attacks.
-    /// The final hash should be the main Bitcoin block Merkle root.
+    /// The final hash should be the main Tondi block Merkle root.
     pub fn get_root(&self, txid: [u8; 32]) -> [u8; 32] {
         // txid is the leaf (e.g., mid_state_txid)
         let mut preimage: [u8; 64] = [0; 64];
@@ -263,7 +263,7 @@ impl BlockInclusionProof {
             level += 1;
             index /= 2;
         }
-        combined_hash // This should be the Bitcoin block's Merkle root
+        combined_hash // This should be the Tondi block's Merkle root
     }
 }
 
@@ -271,7 +271,7 @@ impl BlockInclusionProof {
 ///
 /// - `mid_state_txid`: The transaction ID of the leaf node for which the proof is provided.
 /// - `inclusion_proof`: The proof path containing sibling nodes from the "mid-state" Merkle tree.
-/// - `root`: The expected Bitcoin Merkle root of the block.
+/// - `root`: The expected Tondi Merkle root of the block.
 ///
 /// This function recalculates the root using `inclusion_proof.get_root()` (which applies the
 /// SPV security measure of SHA256-ing mid-state proof elements) and compares it to the expected `root`.
@@ -304,13 +304,13 @@ mod tests {
             .collect();
         let txid_vec: Vec<[u8; 32]> = tx_vec.iter().map(|tx| tx.txid()).collect();
         let txid_0 = txid_vec[0];
-        let merkle_tree = BitcoinMerkleTree::new(txid_vec);
+        let merkle_tree = TondiMerkleTree::new(txid_vec);
         let merkle_root = merkle_tree.root();
         assert_eq!(
             merkle_root,
             block.header.merkle_root.as_raw_hash().to_byte_array()
         );
-        let mid_state_merkle_tree = BitcoinMerkleTree::new_mid_state(&tx_vec);
+        let mid_state_merkle_tree = TondiMerkleTree::new_mid_state(&tx_vec);
         let merkle_root = calculate_sha256(&mid_state_merkle_tree.root());
         assert_eq!(
             merkle_root,
@@ -330,13 +330,13 @@ mod tests {
             .collect();
         let txid_vec: Vec<[u8; 32]> = tx_vec.iter().map(|tx| tx.txid()).collect();
         let txid_vec_clone = txid_vec.clone();
-        let merkle_tree = BitcoinMerkleTree::new(txid_vec);
+        let merkle_tree = TondiMerkleTree::new(txid_vec);
         let merkle_root = merkle_tree.root();
         assert_eq!(
             merkle_root,
             block.header.merkle_root.as_raw_hash().to_byte_array()
         );
-        let mid_state_merkle_tree: BitcoinMerkleTree = BitcoinMerkleTree::new_mid_state(&tx_vec);
+        let mid_state_merkle_tree: TondiMerkleTree = TondiMerkleTree::new_mid_state(&tx_vec);
         let mid_state_merkle_root = calculate_sha256(&mid_state_merkle_tree.root());
         assert_eq!(
             mid_state_merkle_root,
@@ -353,9 +353,9 @@ mod tests {
     #[should_panic(expected = "Duplicate hashes in the Merkle tree, indicating mutation")]
     fn test_malicious_merkle_tree_1() {
         let txid_vec = vec![[1u8; 32], [2u8; 32], [3u8; 32]];
-        let _merkle_tree = BitcoinMerkleTree::new(txid_vec);
+        let _merkle_tree = TondiMerkleTree::new(txid_vec);
         let malicious_tx_vec = vec![[1u8; 32], [2u8; 32], [3u8; 32], [3u8; 32]];
-        let _malicious_merkle_tree = BitcoinMerkleTree::new(malicious_tx_vec);
+        let _malicious_merkle_tree = TondiMerkleTree::new(malicious_tx_vec);
     }
 
     // Should panic
@@ -365,11 +365,11 @@ mod tests {
         let txid_vec = vec![
             [1u8; 32], [2u8; 32], [3u8; 32], [4u8; 32], [5u8; 32], [6u8; 32],
         ];
-        let _merkle_tree = BitcoinMerkleTree::new(txid_vec);
+        let _merkle_tree = TondiMerkleTree::new(txid_vec);
         let malicious_tx_vec = vec![
             [1u8; 32], [2u8; 32], [3u8; 32], [3u8; 32], [4u8; 32], [5u8; 32], [6u8; 32], [5u8; 32],
             [6u8; 32],
         ];
-        let _malicious_merkle_tree = BitcoinMerkleTree::new(malicious_tx_vec);
+        let _malicious_merkle_tree = TondiMerkleTree::new(malicious_tx_vec);
     }
 }

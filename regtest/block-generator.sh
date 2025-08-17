@@ -24,17 +24,17 @@ pid=`docker ps | grep blockstream/esplora | awk '{print $1}'`
 echo "Targeting container $pid ..."
 
 echo "Loading default wallet ..."
-load_wallet_command="/srv/explorer/bitcoin/bin/bitcoin-cli -conf=/data/.bitcoin.conf -datadir=/data/bitcoin loadwallet default"
+load_wallet_command="/srv/explorer/tondi/bin/tondi-cli -conf=/data/.tondi.conf -datadir=/data/tondi loadwallet default"
 docker exec $pid /bin/bash -c "$load_wallet_command"
 
 set -e
 
 echo "Generating a block every $interval seconds. Press [CTRL+C] to stop.."
 
-address_command="/srv/explorer/bitcoin/bin/bitcoin-cli -conf=/data/.bitcoin.conf -datadir=/data/bitcoin getnewaddress"
+address_command="/srv/explorer/tondi/bin/tondi-cli -conf=/data/.tondi.conf -datadir=/data/tondi getnewaddress"
 address=`docker exec $pid /bin/bash -c "$address_command"`
 
-generate_command="/srv/explorer/bitcoin/bin/bitcoin-cli -conf=/data/.bitcoin.conf -datadir=/data/bitcoin generatetoaddress 1 $address"
+generate_command="/srv/explorer/tondi/bin/tondi-cli -conf=/data/.tondi.conf -datadir=/data/tondi generatetoaddress 1 $address"
 
 while :
 do

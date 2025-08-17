@@ -9,7 +9,7 @@ fn main() {
     println!("cargo:rerun-if-env-changed=OUT_DIR");
 
     // Compile time constant environment variables
-    println!("cargo:rerun-if-env-changed=BITCOIN_NETWORK");
+    println!("cargo:rerun-if-env-changed=TONDI_NETWORK");
     println!("cargo:rerun-if-env-changed=TEST_SKIP_GUEST_BUILD");
 
     if std::env::var("CLIPPY_ARGS").is_ok() {
@@ -27,11 +27,11 @@ fn main() {
         return;
     }
 
-    let network = env::var("BITCOIN_NETWORK").unwrap_or_else(|_| {
-        println!("cargo:warning=BITCOIN_NETWORK not set, defaulting to 'mainnet'");
+    let network = env::var("TONDI_NETWORK").unwrap_or_else(|_| {
+        println!("cargo:warning=TONDI_NETWORK not set, defaulting to 'mainnet'");
         "mainnet".to_string()
     });
-    println!("cargo:warning=Building for Bitcoin network: {}", network);
+            println!("cargo:warning=Building for Tondi network: {}", network);
 
     let is_repr_guest_build = match env::var("REPR_GUEST_BUILD") {
         Ok(value) => match value.as_str() {
@@ -87,7 +87,7 @@ fn get_guest_options(network: String) -> HashMap<&'static str, risc0_build::Gues
 
         let docker_opts = DockerOptionsBuilder::default()
             .root_dir(root_dir)
-            .env(vec![("BITCOIN_NETWORK".to_string(), network.clone())])
+            .env(vec![("TONDI_NETWORK".to_string(), network.clone())])
             .build()
             .unwrap();
 

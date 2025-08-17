@@ -1,8 +1,8 @@
-// Implementation of this module is inspired by the Bitcoin Core source code and from here:
+// Implementation of this module is inspired by the Bitcoin Core source code and from here: // NOTE: Bitcoin Core inspiration
 // https://github.com/ZeroSync/header_chain/tree/master/program/src/block_header.
 
 /// This module contains the implementation of the header chain circuit, which is basically
-/// the Bitcoin header chain verification logic.
+/// the Bitcoin header chain verification logic. // NOTE: Bitcoin header chain logic
 /// WARNING: This implementation is not a word-to-word translation of the Bitcoin Core source code.
 use crate::mmr_guest::MMRGuest;
 use bitcoin::{
@@ -15,7 +15,7 @@ use crypto_bigint::{Encoding, U256};
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 
-/// Network configuration holder for Bitcoin-specific constants
+/// Network configuration holder for Bitcoin-specific constants // NOTE: Bitcoin network constants
 #[derive(Debug)]
 pub struct NetworkConstants {
     pub max_bits: u32,
@@ -24,7 +24,7 @@ pub struct NetworkConstants {
 }
 
 pub const NETWORK_TYPE: &str = {
-    match option_env!("BITCOIN_NETWORK") {
+    match option_env!("TONDI_NETWORK") {
         Some(network) if matches!(network.as_bytes(), b"mainnet") => "mainnet",
         Some(network) if matches!(network.as_bytes(), b"testnet4") => "testnet4",
         Some(network) if matches!(network.as_bytes(), b"signet") => "signet",
@@ -41,7 +41,7 @@ const MINIMUM_WORK_TESTNET: U256 =
     U256::from_be_hex("0000000000000000000000000000000000000000000000000000000100010001");
 
 pub const NETWORK_CONSTANTS: NetworkConstants = {
-    match option_env!("BITCOIN_NETWORK") {
+    match option_env!("TONDI_NETWORK") {
         Some(n) if matches!(n.as_bytes(), b"signet") => NetworkConstants {
             max_bits: 0x1E0377AE,
             max_target: U256::from_be_hex(
@@ -104,7 +104,7 @@ const EXPECTED_EPOCH_TIMESPAN: u32 = 60 * 60 * 24 * 14;
 /// Number of blocks per epoch
 const BLOCKS_PER_EPOCH: u32 = 2016;
 
-/// Bitcoin block header.
+/// Tondi block header.
 #[derive(Serialize, Deserialize, Eq, PartialEq, Clone, Debug, BorshDeserialize, BorshSerialize)]
 pub struct CircuitBlockHeader {
     pub version: i32,
@@ -971,7 +971,7 @@ mod tests {
 
     #[test]
     fn test_bits_to_target() {
-        // https://learnmeabitcoin.com/explorer/block/00000000000000000002ebe388cb8fa0683fc34984cfc2d7d3b3f99bc0d51bfd
+        // https://learnmeabitcoin.com/explorer/block/00000000000000000002ebe388cb8fa0683fc34984cfc2d7d3b3f99bc0d51bfd // NOTE: Bitcoin block explorer reference
         let expected_target =
             hex!("00000000000000000002f1280000000000000000000000000000000000000000");
         let bits: u32 = 0x1702f128;

@@ -1,5 +1,5 @@
 use crate::treepp::*;
-use bitcoin::{opcodes::all::*, Opcode};
+use bitcoin::{opcodes::all::*, Opcode}; // NOTE: Bitcoin opcodes
 
 /// u4 to altstack
 pub fn u4_toaltstack(n: u32) -> Script {

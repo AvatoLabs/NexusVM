@@ -1,5 +1,5 @@
 use crate::treepp::*;
-use bitcoin_script_stack::stack::{StackTracker, StackVariable};
+use bitcoin_script_stack::stack::{StackTracker, StackVariable}; // NOTE: Bitcoin script stack types
 
 use super::u4_add::{u4_push_modulo_table_5, u4_push_quotient_table_5};
 

@@ -1,6 +1,6 @@
 use super::u4_std::{u4_drop, CalculateOffset};
 use crate::treepp::*;
-use bitcoin::opcodes::all::*;
+use bitcoin::opcodes::all::*; // NOTE: Bitcoin opcodes
 
 /// Pushes the table for calculating the quotient, i.e. floor(x / 16) for x < 65. i.e. 15 (max u4) * 4 (max # numbers to sum) + 4 (max carry)
 pub fn u4_push_quotient_table() -> Script {

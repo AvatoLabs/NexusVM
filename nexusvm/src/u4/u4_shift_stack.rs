@@ -1,6 +1,6 @@
 use super::u4_shift::u4_push_lshift_tables;
-use bitcoin_script::Script;
-use bitcoin_script_stack::stack::{script, StackTracker, StackVariable};
+use bitcoin_script::Script; // NOTE: Bitcoin script type
+use bitcoin_script_stack::stack::{script, StackTracker, StackVariable}; // NOTE: Bitcoin script stack types
 
 /// Pushes the right shift table, which calculates (x >> b) for {b = 1, 0 <= x < 31 (sum of two numbers)} and {b = 2, 0 <= x < 16}
 pub fn u4_push_rshift_tables() -> Script {

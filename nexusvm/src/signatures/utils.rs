@@ -71,7 +71,7 @@ pub(crate) fn message_to_digits(n_digits: u32, log2_base: u32, message: &[u8]) -
     digits
 }
 
-/// Returns a Bitcoin script that converts a message into a number.
+/// Returns a Bitcoin script that converts a message into a number. // NOTE: Bitcoin script message conversion
 ///
 /// ## Precondition
 ///

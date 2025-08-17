@@ -43,7 +43,7 @@ pub(crate) mod hash_utils {
         chunk::{helpers::pack_nibbles_to_limbs, wrap_hasher::hash_n_bytes},
         treepp::Script,
     };
-    use bitcoin_script::script;
+    use bitcoin_script::script; // NOTE: Bitcoin script macro
 
     /// Compute hash of top two field elements on stack: [a00, a01]
     /// Output is {BLAKE3_HASH_LENGTH} byte output represented in limb-form

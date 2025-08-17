@@ -61,8 +61,8 @@ mod test {
         execute_script,
     };
     use ark_ff::{Field, UniformRand};
-    use bitcoin::hex::FromHex;
-    use bitcoin_script::script;
+    use bitcoin::hex::FromHex; // NOTE: Bitcoin hex utilities
+    use bitcoin_script::script; // NOTE: Bitcoin script macro
     use rand::SeedableRng;
     use rand_chacha::ChaCha20Rng;
 

@@ -132,7 +132,7 @@ pub trait Verifier {
         let mut result = Witness::new();
         for i in 0..ps.total_digit_len() {
             let sig = digit_signature(secret_key, i, digits[i as usize]);
-            // FIXME: Do trailing zeroes violate Bitcoin Script's minimum data push requirement?
+            // FIXME: Do trailing zeroes violate Bitcoin Script's minimum data push requirement? // NOTE: Bitcoin Script requirement
             //        Maybe the script! macro removes the zeroes.
             //        There is a 1/256 chance that a signature contains a trailing zero.
             result.push(sig);
@@ -141,7 +141,7 @@ pub trait Verifier {
         result
     }
 
-    /// Returns a Bitcoin script that verifies a Winternitz signature for the given `public_key`.
+    /// Returns a Bitcoin script that verifies a Winternitz signature for the given `public_key`. // NOTE: Bitcoin script generation
     ///
     /// The checksum is verified by a separate Bitcoin script.
     ///
@@ -170,7 +170,7 @@ pub trait Verifier {
 
 /// Converts the message on the stack after signature verification.
 pub trait Converter {
-    /// Returns a Bitcoin script that converts the message on the stack.
+    /// Returns a Bitcoin script that converts the message on the stack. // NOTE: Bitcoin script message conversion
     fn get_script(ps: &Parameters) -> Script;
 
     /// Returns the number of stack elements of the conversion output.
@@ -227,7 +227,7 @@ impl<VERIFIER: Verifier, CONVERTER: Converter> Winternitz<VERIFIER, CONVERTER> {
         )
     }
 
-    /// Returns a Bitcoin script that verifies a Winternitz signature for the given `public_key`.
+    /// Returns a Bitcoin script that verifies a Winternitz signature for the given `public_key`. // NOTE: Bitcoin script verification
     ///
     /// ## Precondition
     ///
@@ -250,7 +250,7 @@ impl<VERIFIER: Verifier, CONVERTER: Converter> Winternitz<VERIFIER, CONVERTER> {
         }
     }
 
-    /// Returns a Bitcoin script that verifies a Winternitz signature for the given `public_key`.
+    /// Returns a Bitcoin script that verifies a Winternitz signature for the given `public_key`. // NOTE: Bitcoin script verification
     ///
     /// ## Precondition
     ///
@@ -280,7 +280,7 @@ impl<VERIFIER: Verifier, CONVERTER: Converter> Winternitz<VERIFIER, CONVERTER> {
         }
     }
 
-    /// Returns a Bitcoin script that verifies the message checksum.
+    /// Returns a Bitcoin script that verifies the message checksum. // NOTE: Bitcoin script checksum verification
     ///
     /// ## Precondition
     ///
@@ -424,7 +424,7 @@ impl Verifier for BruteforceVerifier {
         result
     }
 
-    /// Returns a Bitcoin script that verifies a Winternitz signature for the given `public_key`.
+    /// Returns a Bitcoin script that verifies a Winternitz signature for the given `public_key`. // NOTE: Bitcoin script verification
     ///
     /// ## Precondition
     ///
@@ -438,7 +438,7 @@ impl Verifier for BruteforceVerifier {
     /// ## Postcondition
     ///
     /// - `digits[n - 1]`
-    /// - `digits[n - 2]`
+    /// - `digits[n - 2])`
     /// - ...
     /// - `digits[0]` (alt stack top)
     ///

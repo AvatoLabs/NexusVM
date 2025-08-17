@@ -34,7 +34,6 @@ bridge_data/
 # Esplora regtest data
 nohup.out
 data_path
-esplora-bitcoin-regtest-data
 
 # test cache
 test_data/

@@ -8,7 +8,7 @@ use ark_groth16::Groth16;
 use ark_relations::lc;
 use ark_relations::r1cs::{ConstraintSynthesizer, ConstraintSystemRef, SynthesisError};
 use ark_std::{end_timer, start_timer, test_rng, UniformRand};
-use bitcoin_script::script;
+use bitcoin_script::script; // NOTE: Bitcoin script macro
 use rand::{RngCore, SeedableRng};
 
 #[derive(Copy, Clone)]
