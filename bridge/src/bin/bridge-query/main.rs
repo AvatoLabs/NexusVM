@@ -1,4 +1,4 @@
-use bitcoin::Network;
+use bridge::network::NetworkType;
 use bridge::{client::cli::query_command::QueryCommand, constants::DestinationNetwork};
 use clap::{arg, command};
 use std::error::Error;
@@ -23,9 +23,9 @@ async fn main() -> Result<(), Box<dyn Error>> {
     let matches = command.clone().get_matches();
     let (source_network, destination_network) =
         match matches.get_one::<String>("environment").unwrap().as_str() {
-            "mainnet" => (Network::Bitcoin, DestinationNetwork::Ethereum),
-            "testnet" => (Network::Testnet, DestinationNetwork::EthereumSepolia),
-            "local" => (Network::Regtest, DestinationNetwork::Local),
+                    "mainnet" => (NetworkType::Mainnet, DestinationNetwork::Ethereum),
+        "testnet" => (NetworkType::Testnet, DestinationNetwork::EthereumSepolia),
+        "local" => (NetworkType::Devnet, DestinationNetwork::Local),
             _ => {
                 eprintln!("Invalid environment. Use mainnet, testnet.");
                 std::process::exit(1);
@@ -33,7 +33,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
         };
     let prefix = matches.get_one::<String>("prefix").map(|s| s.as_str());
 
-    let mut query = QueryCommand::new(source_network, destination_network, prefix).await;
+    let mut query = QueryCommand::new(source_network.into(), destination_network, prefix).await;
     let resp = match matches.subcommand() {
         Some(("depositor", sub)) => query.handle_depositor(sub).await,
         Some(("withdrawer", sub)) => query.handle_withdrawer(sub, destination_network).await,

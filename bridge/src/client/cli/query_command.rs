@@ -42,7 +42,7 @@ impl QueryCommand {
         let n_of_n_public_keys: Vec<PublicKey> = vec![verifier_0_public_key];
 
         let nexusvm_client = NexusVMClient::new(
-            Some(get_esplora_url(source_network)),
+            Some(get_esplora_url(source_network.into())),
             source_network,
             destination_network,
             Some(get_chain_adaptor(DestinationNetwork::Local, None, None)), // TODO: Update this according to the requirements for query command.

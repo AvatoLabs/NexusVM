@@ -27,15 +27,15 @@ pub const NETWORK_TYPE: &str = {
     match option_env!("TONDI_NETWORK") {
         Some(network) if matches!(network.as_bytes(), b"mainnet") => "mainnet",
         Some(network) if matches!(network.as_bytes(), b"testnet4") => "testnet4",
-        Some(network) if matches!(network.as_bytes(), b"signet") => "signet",
-        Some(network) if matches!(network.as_bytes(), b"regtest") => "regtest",
+        Some(network) if matches!(network.as_bytes(), b"simnet") => "simnet",
+        Some(network) if matches!(network.as_bytes(), b"devnet") => "devnet",
         None => "mainnet",
         _ => panic!("Invalid network type"),
     }
 };
 
 // Const evaluation of network type from environment
-const IS_REGTEST: bool = matches!(NETWORK_TYPE.as_bytes(), b"regtest");
+const IS_DEVNET: bool = matches!(NETWORK_TYPE.as_bytes(), b"devnet");
 const IS_TESTNET4: bool = matches!(NETWORK_TYPE.as_bytes(), b"testnet4");
 const MINIMUM_WORK_TESTNET: U256 =
     U256::from_be_hex("0000000000000000000000000000000000000000000000000000000100010001");
@@ -52,7 +52,7 @@ pub const NETWORK_CONSTANTS: NetworkConstants = {
                 0, 0, 0, 0, 0, 0,
             ],
         },
-        Some(n) if matches!(n.as_bytes(), b"regtest") => NetworkConstants {
+        Some(n) if matches!(n.as_bytes(), b"devnet") => NetworkConstants {
             max_bits: 0x207FFFFF,
             max_target: U256::from_be_hex(
                 "7FFFFF0000000000000000000000000000000000000000000000000000000000",
@@ -188,7 +188,7 @@ impl ChainState {
     }
 
     pub fn apply_blocks(&mut self, block_headers: Vec<CircuitBlockHeader>) {
-        let mut current_target_bytes = if IS_REGTEST {
+        let mut current_target_bytes = if IS_DEVNET {
             NETWORK_CONSTANTS.max_target.to_be_bytes()
         } else {
             bits_to_target(self.current_target_bits)
@@ -243,7 +243,7 @@ impl ChainState {
 
             assert_eq!(block_header.prev_block_hash, self.best_block_hash);
 
-            if IS_REGTEST {
+            if IS_DEVNET {
                 assert_eq!(block_header.bits, NETWORK_CONSTANTS.max_bits);
             } else {
                 assert_eq!(block_header.bits, expected_bits);
@@ -259,7 +259,7 @@ impl ChainState {
             self.best_block_hash = new_block_hash;
             current_work = current_work.wrapping_add(&work_to_add);
 
-            if !IS_REGTEST && self.block_height % BLOCKS_PER_EPOCH == 0 {
+            if !IS_DEVNET && self.block_height % BLOCKS_PER_EPOCH == 0 {
                 self.epoch_start_time = block_header.time;
             }
 
@@ -269,7 +269,7 @@ impl ChainState {
                 last_block_time = block_header.time;
             }
 
-            if !IS_REGTEST && self.block_height % BLOCKS_PER_EPOCH == BLOCKS_PER_EPOCH - 1 {
+            if !IS_DEVNET && self.block_height % BLOCKS_PER_EPOCH == BLOCKS_PER_EPOCH - 1 {
                 current_target_bytes = calculate_new_difficulty(
                     self.epoch_start_time,
                     block_header.time,

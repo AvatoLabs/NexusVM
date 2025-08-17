@@ -1,4 +1,4 @@
-use bitcoin::{Amount, Network::Regtest};
+use bitcoin::{Amount, NetworkType::Devnet};
 
 use nexusvm::signatures::signing_winniz::{generate_winternitz_witness, WinternitzSigningInputs};
 use bridge::{

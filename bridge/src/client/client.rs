@@ -188,7 +188,7 @@ impl NexusVMClient {
             get_private_data_from_file(&get_private_data_file_path(&local_file_path));
 
         Self {
-            esplora: Builder::new(esplora_url.unwrap_or(get_esplora_url(source_network)))
+            esplora: Builder::new(esplora_url.unwrap_or(get_esplora_url(source_network.into())))
                 .build_async()
                 .expect("Could not build esplora client"),
             source_network,

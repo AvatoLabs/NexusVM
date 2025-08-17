@@ -6,8 +6,9 @@ exclude = ["tests"]
 
 [dependencies]
 nexusvm = { path = "../nexusvm" }
+bitcoin = { version = "0.32.5", features = ["rand-std"] }
+# tondi-consensus-core = { path = "../../Tondi/consensus/core" }
 bitcoin-script.workspace = true
-bitcoin.workspace = true
 strum.workspace = true
 strum_macros.workspace = true
 bitcoin-scriptexec.workspace = true

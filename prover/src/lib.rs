@@ -21,11 +21,11 @@ const HEADER_CHAIN_GUEST_ELF: &[u8] = {
         Some(network) if matches!(network.as_bytes(), b"testnet4") => {
             include_bytes!("../elfs/testnet4-header-chain-guest.bin")
         }
-        Some(network) if matches!(network.as_bytes(), b"signet") => {
-            include_bytes!("../elfs/signet-header-chain-guest.bin")
+        Some(network) if matches!(network.as_bytes(), b"simnet") => {
+            include_bytes!("../elfs/simnet-header-chain-guest.bin")
         }
-        Some(network) if matches!(network.as_bytes(), b"regtest") => {
-            include_bytes!("../elfs/regtest-header-chain-guest.bin")
+        Some(network) if matches!(network.as_bytes(), b"devnet") => {
+            include_bytes!("../elfs/devnet-header-chain-guest.bin")
         }
         None => include_bytes!("../elfs/mainnet-header-chain-guest.bin"),
         _ => panic!("Invalid path or ELF file"),
@@ -40,11 +40,11 @@ const HEADERS: &[u8] = {
         Some(network) if matches!(network.as_bytes(), b"testnet4") => {
             include_bytes!("../data/testnet4-headers.bin")
         }
-        Some(network) if matches!(network.as_bytes(), b"signet") => {
-            include_bytes!("../data/signet-headers.bin")
+        Some(network) if matches!(network.as_bytes(), b"simnet") => {
+            include_bytes!("../data/simnet-headers.bin")
         }
-        Some(network) if matches!(network.as_bytes(), b"regtest") => {
-            include_bytes!("../data/regtest-headers.bin")
+        Some(network) if matches!(network.as_bytes(), b"devnet") => {
+            include_bytes!("../data/devnet-headers.bin")
         }
         None => include_bytes!("../data/mainnet-headers.bin"),
         _ => panic!("Invalid network type"),

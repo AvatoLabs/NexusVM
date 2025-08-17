@@ -1560,7 +1560,7 @@ impl PegOutGraph {
                     self.start_time_transaction.sign(
                         context,
                         &self.connector_2,
-                        get_start_time_block_number(context.network),
+                        get_start_time_block_number(context.network.into()),
                         start_time_commitment_secret,
                     );
                     Ok(self.start_time_transaction.finalize())

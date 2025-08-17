@@ -265,7 +265,7 @@ mod tests {
         let mut pubkeys: Vec<PublicKey> = Vec::new();
         for signer in 0..SIGNERS {
             let (keypair, pubkey) = generate_keys_from_secret(
-                bitcoin::Network::Bitcoin,
+                bitcoin::NetworkType::Mainnet,
                 &[(signer + 1) as u8; SECRET_KEY_SIZE].to_lower_hex_string(),
             );
             keypairs.push(keypair);

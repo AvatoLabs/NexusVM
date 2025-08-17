@@ -169,8 +169,8 @@ fn copy_binary_to_elfs_folder(network: String) {
     let logical_elf_path_for_id = match network.as_str() {
         "mainnet" => "prover/elfs/mainnet-header-chain-guest.bin",
         "testnet4" => "prover/elfs/testnet4-header-chain-guest.bin",
-        "signet" => "prover/elfs/signet-header-chain-guest.bin",
-        "regtest" => "prover/elfs/regtest-header-chain-guest.bin",
+        "simnet" => "prover/elfs/simnet-header-chain-guest.bin",
+        "devnet" => "prover/elfs/devnet-header-chain-guest.bin",
         _ => {
             println!(
                 "cargo:warning=Invalid network specified, defaulting to mainnet for logical path"

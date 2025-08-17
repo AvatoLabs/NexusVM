@@ -4,8 +4,9 @@ use bitcoin::{
     block::{Header, Version},
     consensus::encode::serialize,
     hashes::Hash,
-    BlockHash, CompactTarget, Network, TxMerkleNode,
+    BlockHash, CompactTarget, TxMerkleNode,
 };
+use crate::network::NetworkType;
 use bitcoin_script::{script, Script};
 
 use nexusvm::pseudo::NMUL;
@@ -15,10 +16,10 @@ use nexusvm::pseudo::NMUL;
   that lasts for the period ∆C (e.g. 2000 blocks), during which the operator must observe
   all blocks on the main chain and identify the heaviest superblock SB.
 */
-pub fn get_start_time_block_number(network: Network) -> u32 {
+pub fn get_start_time_block_number(network: NetworkType) -> u32 {
     match network {
-        Network::Bitcoin => 161249,
-        Network::Regtest => 100,
+        NetworkType::Mainnet => 161249,
+        NetworkType::Devnet => 100,
         _ => 161249,
     }
 }

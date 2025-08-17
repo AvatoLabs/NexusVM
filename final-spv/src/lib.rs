@@ -21,11 +21,11 @@ const HEADER_CHAIN_GUEST_ID: [u32; 8] = {
             1866422223, 3011666006, 1737793548, 1848006863, 1320341210, 1623031594, 1418162769,
             4138395741,
         ],
-        Some(network) if matches!(network.as_bytes(), b"signet") => [
+        Some(network) if matches!(network.as_bytes(), b"simnet") => [
             3760542186, 3452311364, 636757141, 2341919608, 3798837687, 3808746669, 4002435111,
             318058396,
         ],
-        Some(network) if matches!(network.as_bytes(), b"regtest") => [
+        Some(network) if matches!(network.as_bytes(), b"devnet") => [
             1361809821, 2352021461, 2194279832, 977027345, 356844560, 3592195208, 1085394392,
             1717039563,
         ],

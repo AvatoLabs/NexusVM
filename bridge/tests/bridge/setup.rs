@@ -186,7 +186,7 @@ pub async fn setup_test_full() -> SetupConfigFull {
 }
 
 pub async fn setup_test() -> SetupConfig {
-    let source_network = Network::Regtest;
+            let source_network = NetworkType::Devnet;
     let destination_network = DestinationNetwork::Local;
 
     let commitment_secrets = get_test_commitment_secrets();

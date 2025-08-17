@@ -48,7 +48,7 @@ impl ConnectorB {
             network,
             n_of_n_taproot_public_key: *n_of_n_taproot_public_key,
             commitment_public_keys: commitment_public_keys.clone(),
-            num_blocks_timelock_1: num_blocks_per_network(network, NUM_BLOCKS_PER_3_DAYS),
+            num_blocks_timelock_1: num_blocks_per_network(network.into(), NUM_BLOCKS_PER_3_DAYS),
         }
     }
 
@@ -176,7 +176,7 @@ mod tests {
     use bitcoin::{
         block::{Header, Version},
         BlockHash, CompactTarget,
-        Network::Regtest,
+                    NetworkType::Devnet,
         TxMerkleNode,
     };
     use bitcoin_script::script;

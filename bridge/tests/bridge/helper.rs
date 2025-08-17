@@ -33,7 +33,7 @@ use tokio::time::sleep;
 
 // Test environment config file and its variables
 const TEST_ENV_FILE: &str = ".env.test";
-const REGTEST_BLOCK_TIME: &str = "REGTEST_BLOCK_TIME";
+const DEVNET_BLOCK_TIME: &str = "DEVNET_BLOCK_TIME";
 
 fn load_u32_env_var_from_file(var: &str, file_name: &str) -> u32 {
     dotenv::from_filename(file_name)
@@ -45,10 +45,10 @@ fn load_u32_env_var_from_file(var: &str, file_name: &str) -> u32 {
 }
 
 /// Returns expected block time for the given network in seconds.
-fn network_block_time(network: Network) -> u32 {
+fn network_block_time(network: NetworkType) -> u32 {
     match network {
-        Network::Regtest => load_u32_env_var_from_file(REGTEST_BLOCK_TIME, TEST_ENV_FILE),
-        _ => 35, // Testnet, signet. This value is for Alpen signet. See https://mempool0713bb23.devnet-annapurna.stratabtc.org/
+        NetworkType::Devnet => load_u32_env_var_from_file(DEVNET_BLOCK_TIME, TEST_ENV_FILE),
+        _ => 35, // Testnet4, simnet. This value is for Tondi testnet4. See https://mempool0713bb23.devnet-annapurna.stratabtc.org/
     }
 }
 

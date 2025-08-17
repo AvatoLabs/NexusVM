@@ -115,7 +115,7 @@ The NexusVM CLI application can be invoked with various commands. The general sy
 ### Global Options
 
 - -r, --verifiers <VERIFIER_PUBKEYS>: Comma-separated list of public keys for verifiers (max: 1000). Can also be set via the VERIFIERS environment variable.
-- -e, --environment <ENVIRONMENT>: Optional; Specify the Tondi network environment (mainnet, testnet, regtest). Defaults to testnet. Can also be set via the ENVIRONMENT environment variable.
+- -e, --environment <ENVIRONMENT>: Optional; Specify the Tondi network environment (mainnet, testnet, simnet, devnet). Defaults to testnet4. Can also be set via the ENVIRONMENT environment variable.
 - --key-dir <DIRECTORY>: Optional; Directory containing the private keys. Can also be set via the KEY_DIR environment variable.
 - -p, --user-profile <USER_PROFILE>: Optional; An arbitrary name of the user running the client (e.g. 'operator_one', 'verifier_0'). Used as a namespace separator in the local file path for storing private and public client data. Can also be set by the USER_PROFILE environment variable.
 

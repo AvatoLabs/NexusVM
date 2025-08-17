@@ -22,7 +22,7 @@ impl Connector3 {
         Connector3 {
             network,
             operator_public_key: *operator_public_key,
-            num_blocks_timelock: num_blocks_per_network(network, NUM_BLOCKS_PER_3_DAYS),
+            num_blocks_timelock: num_blocks_per_network(network.into(), NUM_BLOCKS_PER_3_DAYS),
         }
     }
 }

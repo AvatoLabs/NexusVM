@@ -2,7 +2,8 @@ use alloy::transports::http::{
     reqwest::{Error, Response, StatusCode},
     Client,
 };
-use bitcoin::{Address, Amount, Network, Txid};
+use bitcoin::{Address, Amount, Txid};
+use crate::network::NetworkType;
 use bridge::client::client::NexusVMClient;
 use rand::Rng;
 use serde::{Deserialize, Serialize};
@@ -23,8 +24,8 @@ struct FundResult {
 }
 
 pub enum FaucetType {
-    Signet,
-    EsploraRegtest,
+    Simnet,
+    EsploraDevnet,
 }
 
 pub struct Faucet {
@@ -34,7 +35,7 @@ pub struct Faucet {
 
 impl Default for Faucet {
     fn default() -> Self {
-        Self::new(FaucetType::EsploraRegtest)
+        Self::new(FaucetType::EsploraDevnet)
     }
 }
 
@@ -49,10 +50,10 @@ impl Faucet {
         }
     }
 
-    fn get_network(&self) -> Network {
+    fn get_network(&self) -> NetworkType {
         match self.faucet_type {
-            FaucetType::Signet => Network::Signet,
-            FaucetType::EsploraRegtest => Network::Regtest,
+            FaucetType::Simnet => NetworkType::Simnet,
+            FaucetType::EsploraDevnet => NetworkType::Devnet,
         }
     }
 
@@ -62,8 +63,8 @@ impl Faucet {
 
     pub async fn fund_input(&self, address: &Address, amount: Amount) -> &Self {
         match self.faucet_type {
-            FaucetType::Signet => self.fund_input_with_retry(address, amount).await,
-            FaucetType::EsploraRegtest => self.fund_input_by_cli(address, amount),
+            FaucetType::Simnet => self.fund_input_with_retry(address, amount).await,
+            FaucetType::EsploraDevnet => self.fund_input_by_cli(address, amount),
         };
         self
     }
@@ -85,8 +86,8 @@ impl Faucet {
             let expected_count = *addr_count.get(input.0).unwrap_or(&0);
             if utxos.is_none() || utxos.is_some_and(|x| x.len() < expected_count) {
                 match self.faucet_type {
-                    FaucetType::Signet => self.fund_input_with_retry(input.0, input.1).await,
-                    FaucetType::EsploraRegtest => self.fund_input_by_cli(input.0, input.1),
+                    FaucetType::Simnet => self.fund_input_with_retry(input.0, input.1).await,
+                    FaucetType::EsploraDevnet => self.fund_input_by_cli(input.0, input.1),
                 };
             }
         }

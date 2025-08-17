@@ -1,3 +1,4 @@
+use crate::network::NetworkType;
 use bitcoin::{Network, PublicKey};
 use clap::{arg, ArgGroup, ArgMatches, Command};
 use serde::{Deserialize, Serialize};
@@ -201,5 +202,5 @@ impl KeysCommand {
 // TODO: Technically this should use the source network specified by the user. However, since this
 // is only used in console output as an ID, we can leave it for now.
 fn pubkey_of(private_key: &str) -> PublicKey {
-    generate_keys_from_secret(Network::Bitcoin, private_key).1
+    generate_keys_from_secret(NetworkType::Mainnet.into(), private_key).1
 }

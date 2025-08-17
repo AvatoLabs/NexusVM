@@ -1,18 +1,18 @@
 use std::path::{Path, PathBuf};
 
 use bitcode::{Decode, Encode};
-use bitcoin::Network;
+use crate::network::NetworkType;
 use bitcoin_script::{script, Script};
 use nexusvm::{bigint::BigIntImpl, pseudo::NMUL};
 
-const NUM_BLOCKS_REGTEST: u32 = 2;
+const NUM_BLOCKS_DEVNET: u32 = 2;
 const NUM_BLOCKS_TESTNET: u32 = 2;
 
-pub fn num_blocks_per_network(network: Network, mainnet_num_blocks: u32) -> u32 {
+pub fn num_blocks_per_network(network: NetworkType, mainnet_num_blocks: u32) -> u32 {
     match network {
-        Network::Bitcoin => mainnet_num_blocks,
-        Network::Regtest => NUM_BLOCKS_REGTEST,
-        _ => NUM_BLOCKS_TESTNET, // Testnet, Signet
+        NetworkType::Mainnet => mainnet_num_blocks,
+        NetworkType::Devnet => NUM_BLOCKS_DEVNET,
+        _ => NUM_BLOCKS_TESTNET, // Testnet, Simnet
     }
 }
 

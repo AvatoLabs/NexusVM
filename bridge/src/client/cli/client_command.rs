@@ -18,6 +18,7 @@ use clap::{arg, ArgMatches, Command};
 use colored::Colorize;
 use std::io::{self, Write};
 use std::str::FromStr;
+use crate::network::NetworkType;
 use std::time::Duration;
 use tokio::io::{AsyncBufReadExt, BufReader};
 use tokio::time::sleep;
@@ -37,9 +38,9 @@ pub struct ClientCommand {
 impl ClientCommand {
     pub async fn new(common_args: CommonArgs) -> Self {
         let (source_network, destination_network) = match common_args.environment.as_deref() {
-            Some("mainnet") => (Network::Bitcoin, DestinationNetwork::Ethereum),
-            Some("testnet") => (Network::Testnet, DestinationNetwork::EthereumSepolia),
-            Some("regtest") => (Network::Regtest, DestinationNetwork::Local),
+            Some("mainnet") => (NetworkType::Mainnet, DestinationNetwork::Ethereum),
+            Some("testnet") => (NetworkType::Testnet, DestinationNetwork::EthereumSepolia),
+            Some("regtest") => (NetworkType::Devnet, DestinationNetwork::Local),
             _ => {
                 eprintln!("Invalid environment. Use mainnet, testnet or regtest.");
                 std::process::exit(1);
@@ -61,7 +62,7 @@ impl ClientCommand {
 
         let nexusvm_client = NexusVMClient::new(
             Some(get_esplora_url(source_network)),
-            source_network,
+            source_network.into(),
             destination_network,
             Some(get_chain_adaptor(DestinationNetwork::Local, None, None)), // TODO: Will be replaced with a destination network specific adaptor once Ethereum support is added.
             &n_of_n_public_keys,
